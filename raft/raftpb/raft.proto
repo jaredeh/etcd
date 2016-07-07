@@ -15,9 +15,12 @@ enum EntryType {
 }
 
 message Entry {
-	optional EntryType  Type  = 1 [(gogoproto.nullable) = false];
+	// 'Term' and 'Index' need to be 64bit aligned for atomic access in their
+	// final go language constructs.  Wire protocol can remain ordered with
+	// EntryType first.
 	optional uint64     Term  = 2 [(gogoproto.nullable) = false];
 	optional uint64     Index = 3 [(gogoproto.nullable) = false];
+	optional EntryType  Type  = 1 [(gogoproto.nullable) = false];
 	optional bytes      Data  = 4;
 }
 
